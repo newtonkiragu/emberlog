@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@huggingface/transformers": "^3.4.0",
     "@prisma/client": "^6.5.0",
     "huggingface": "^1.4.0",
     "next": "15.2.2",
