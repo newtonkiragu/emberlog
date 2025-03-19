@@ -23,7 +23,7 @@ const Navbar = () => {
 
   const guestNavItems = [
     { key: "login", label: "Login", href: "/login" },
-    { key: "signup", label: "Sign Up", href: "/signup" },
+    { key: "signup", label: "Sign Up", href: "/register" },
   ];
 
   return isMobile ? (
