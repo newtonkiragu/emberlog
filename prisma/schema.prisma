@@ -46,6 +46,8 @@ model Entry {
   authorId   String
   tags       Tag[]    @relation("EntryTags")
   tagIds     String[]
+  mood       Mood     @default(NEUTRAL)
+  moodScore  Float?   @default(0)
 }
 
 model Tag {

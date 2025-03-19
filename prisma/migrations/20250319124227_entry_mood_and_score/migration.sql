@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Entry" ADD COLUMN     "mood" "Mood" NOT NULL DEFAULT 'NEUTRAL',
+ADD COLUMN     "moodScore" DOUBLE PRECISION DEFAULT 0;
