@@ -8,14 +8,14 @@ export async function POST(req: Request) {
 
         if (!email || !password) {
             return NextResponse.json(
-                {error: "Email and password are required", status: 400},
+                {error: "Email and password are required", status: 400}
             );
         }
 
         const existingUser = await prisma.user.findUnique({where: {email}});
         if (existingUser) {
             return NextResponse.json(
-                {error: "User already exists", status: 405},
+                {error: "User already exists", status: 409}
             );
         }
 
@@ -25,12 +25,12 @@ export async function POST(req: Request) {
         });
 
         return NextResponse.json(
-            {message: "User created", user: {id: user.id, email: user.email}, status: 201},
+            {message: "User created", user: {id: user.id, email: user.email}, status: 201}
         );
     } catch (err) {
         console.error("Registration error:", err);
         return NextResponse.json(
-            {error: "Internal server error", status: 500},
+            {error: "Internal server error", status: 500}
         );
     }
 }
