@@ -24,15 +24,15 @@ model Session {
 }
 
 model User {
-  id        String    @id @default(uuid())
-  email     String    @unique
-  password  String
-  name      String?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  Entry     Entry[]
-  sessions  Session[]
-
+  id               String             @id @default(uuid())
+  email            String             @unique
+  password         String
+  name             String?
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  Entry            Entry[]
+  sessions         Session[]
+  DailyMoodSummary DailyMoodSummary[]
 }
 
 model Entry {
@@ -67,4 +67,14 @@ enum Mood {
   GOOD
   GREAT
   HAPPY
+}
+
+model DailyMoodSummary {
+  id        String   @id @default(uuid())
+  date      DateTime @unique
+  mood      Mood
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
