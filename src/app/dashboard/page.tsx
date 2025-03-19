@@ -11,7 +11,6 @@ export default function DashboardPage() {
         <ClientSessionWrapper>
             <Navbar/>
             <LocalizationProvider dateAdapter={AdapterDateFns as any}>
-
                 <Dashboard/>
             </LocalizationProvider>
 
