@@ -76,7 +76,7 @@ model DailyMoodSummary {
   date      DateTime @unique
   mood      Mood
   user      User     @relation(fields: [userId], references: [id])
-  userId    String
+  userId    String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
