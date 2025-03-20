@@ -1,0 +1,192 @@
+/* Dashboard Container */
+.dashboard-container {
+    width: 100%;
+    max-width: 900px;
+}
+
+/* Date Navigation */
+.date-navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-medium);
+    margin-bottom: var(--spacing-large);
+}
+
+.date-navigation h2 {
+    font-size: 18px;
+    font-weight: var(--heading-font-weight);
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-medium);
+}
+
+/* Full Width Card */
+.full-width {
+    grid-column: span 2;
+}
+
+/* Entries Grid */
+.entries-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: var(--spacing-small);
+}
+
+/* Entry Card */
+.entry-card {
+    background: var(--card-background);
+    padding: var(--spacing-medium);
+    border-radius: var(--border-radius-medium);
+    cursor: pointer;
+    transition: box-shadow var(--transition-fast);
+}
+
+.entry-card:hover {
+    box-shadow: var(--shadow-medium);
+}
+
+/* Loader */
+.loader {
+    width: 25px;
+    height: 25px;
+    border: 4px solid var(--primary-color);
+    border-top: 4px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: var(--spacing-small) auto;
+}
+
+/* Mood Card */
+.mood-card {
+    color: white;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+/* Tags Card */
+.tags-card .tag {
+    display: inline-block;
+    background-color: #efefef;
+    color: #333;
+    padding: 5px 10px;
+    margin: 5px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
+
+/* Mood Styles */
+.entry-card {
+    position: relative;
+    background: var(--card-background);
+    padding: var(--spacing-medium);
+    border-radius: var(--border-radius-medium);
+    cursor: pointer;
+    transition: box-shadow var(--transition-fast);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 120px;
+}
+
+/* Mood-based background */
+.entry-card[data-mood="TERRIBLE"] {
+    background-color: rgba(139, 0, 0, 0.2);
+}
+
+/* Dark Red */
+.entry-card[data-mood="BAD"] {
+    background-color: rgba(211, 47, 47, 0.2);
+}
+
+/* Red */
+.entry-card[data-mood="SAD"] {
+    background-color: rgba(25, 118, 210, 0.2);
+}
+
+/* Blue */
+.entry-card[data-mood="MEH"] {
+    background-color: rgba(128, 128, 128, 0.2);
+}
+
+/* Gray */
+.entry-card[data-mood="NEUTRAL"] {
+    background-color: rgba(117, 117, 117, 0.2);
+}
+
+/* Light Gray */
+.entry-card[data-mood="OKAY"] {
+    background-color: rgba(56, 142, 60, 0.2);
+}
+
+/* Green */
+.entry-card[data-mood="GOOD"] {
+    background-color: rgba(46, 125, 50, 0.2);
+}
+
+/* Dark Green */
+.entry-card[data-mood="GREAT"] {
+    background-color: rgba(27, 94, 32, 0.2);
+}
+
+/* Forest Green */
+.entry-card[data-mood="HAPPY"] {
+    background-color: rgba(255, 215, 0, 0.2);
+}
+
+/* Yellow */
+
+/* Mood Emoji in Top Right */
+.entry-card .mood-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.5rem;
+}
+
+/* Title */
+.entry-card h4 {
+    font-weight: bold;
+    margin-bottom: var(--spacing-small);
+}
+
+/* Read More Button */
+.read-more {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-top: var(--spacing-small);
+}
+
+
+.entry-card:hover {
+    box-shadow: var(--shadow-medium);
+}
+
+
+/* Read More Button */
+.read-more {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-top: 5px;
+}
+
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
