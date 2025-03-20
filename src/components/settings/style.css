@@ -1,0 +1,85 @@
+/* SETTINGS PAGE STYLES */
+.settings-container {
+    max-width: 600px;
+    margin: 40px auto;
+    background: var(--card-background);
+    box-shadow: var(--shadow-medium);
+    border-radius: var(--border-radius-large);
+    padding: var(--spacing-large);
+    transition: background var(--transition-medium);
+}
+
+.settings-container h1 {
+    text-align: center;
+    margin-bottom: var(--spacing-large);
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 2px solid var(--secondary-text-color);
+    margin-bottom: var(--spacing-large);
+}
+
+.tabs button {
+    flex: 1;
+    padding: var(--spacing-small);
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    font-weight: var(--heading-font-weight);
+    color: var(--secondary-text-color);
+    transition: color var(--transition-fast);
+}
+
+.tabs button.active {
+    color: var(--primary-color);
+    border-bottom: 3px solid var(--primary-color);
+}
+
+/* Settings Section */
+.settings-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-medium);
+}
+
+/* Input Fields */
+.settings-section input {
+    padding: var(--spacing-small);
+    border-radius: var(--border-radius-medium);
+    border: 1px solid var(--secondary-text-color);
+    transition: border-color var(--transition-fast);
+}
+
+.settings-section input:focus {
+    border-color: var(--primary-color);
+}
+
+/* Buttons */
+.settings-section button {
+    width: fit-content;
+    align-self: flex-start;
+    transition: all var(--transition-fast);
+}
+
+.settings-section button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Color Picker */
+.color-picker-container {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-small);
+}
+
+.color-preview {
+    width: 24px;
+    height: 24px;
+    border-radius: var(--border-radius-medium);
+    border: 1px solid var(--secondary-text-color);
+}
