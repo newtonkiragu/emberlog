@@ -1,0 +1,152 @@
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-medium);
+    background: var(--card-background);
+    box-shadow: var(--shadow-medium);
+    color: var(--primary-text-color);
+    transition: background var(--transition-medium);
+    z-index: 1;
+}
+
+.logo {
+    height: 8em; /* Adjust as needed */
+    width: auto;
+    object-fit: contain;
+}
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    background: var(--card-background);
+    box-shadow: var(--shadow-large);
+    padding-top: 5em;
+    transition: width var(--transition-medium);
+    border-top-right-radius: var(--border-radius-large);
+    border-bottom-right-radius: var(--border-radius-large);
+    overflow-x: hidden;
+    white-space: nowrap;
+}
+
+/* Collapsed Sidebar */
+.sidebar.collapsed {
+    width: 80px;
+}
+
+/* Sidebar List */
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar li {
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-medium);
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 500;
+    transition: background var(--transition-fast), color var(--transition-fast);
+    border-radius: var(--border-radius-medium);
+    margin: var(--spacing-small) var(--spacing-medium);
+}
+
+.sidebar li:hover {
+    background: var(--primary-hover);
+    color: white;
+}
+
+/* Active Sidebar Item */
+.sidebar li.active {
+    background: var(--primary-color);
+    color: white;
+    font-weight: bold;
+}
+
+/* Icons stay centered when collapsed */
+.sidebar.collapsed li {
+    justify-content: center;
+}
+
+/* Hide text when collapsed */
+.sidebar.collapsed li span {
+    display: none;
+}
+
+/* Adjust icon size */
+.sidebar li svg {
+    font-size: 1.5rem;
+    transition: transform var(--transition-fast);
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-medium);
+    background: var(--card-background);
+    box-shadow: var(--shadow-medium);
+    color: var(--primary-text-color);
+    transition: background var(--transition-medium);
+}
+
+.menuButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: var(--primary-text-color);
+    transition: color var(--transition-fast);
+}
+
+.menuButton:hover {
+    color: var(--primary-hover);
+}
+
+
+.navActions {
+    display: flex;
+    align-items: center;
+}
+
+/* Auth Buttons */
+.authButtons {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-medium);
+}
+
+.authButton {
+    padding: var(--spacing-small) var(--spacing-medium);
+    border-radius: var(--border-radius-medium);
+    text-decoration: none;
+    font-weight: var(--body-font-weight);
+    color: var(--primary-text-color);
+    border: 2px solid var(--primary-color);
+    background: transparent;
+    transition: all var(--transition-fast);
+}
+
+.authButton:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* Signup Button */
+.signup {
+    border-color: var(--success-color);
+    color: var(--success-color);
+}
+
+.signup:hover {
+    background: var(--success-color);
+    color: white;
+}

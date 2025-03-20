@@ -1,60 +1,67 @@
-import {useSession} from "next-auth/react";
-import {AppBar, BottomNavigation, BottomNavigationAction, Button, Toolbar, Typography} from "@mui/material";
-import Link from "next/link";
-import HomeIcon from "@mui/icons-material/Home";
-import BookIcon from "@mui/icons-material/Book";
-import MoodIcon from "@mui/icons-material/Mood";
-import SearchIcon from "@mui/icons-material/Search";
-import SettingsIcon from "@mui/icons-material/Settings";
-import LogoutIcon from "@mui/icons-material/Logout";
+"use client";
+
+import {useState} from "react";
+import {useSession, signOut} from "next-auth/react";
+import {usePathname, useRouter} from "next/navigation";
+import {
+    FiMenu,
+    FiHome,
+    FiBook,
+    FiSmile,
+    FiSearch,
+    FiSettings,
+    FiLogOut, FiX,
+} from "react-icons/fi";
+import "./style.css";
 
 const Navbar = () => {
     const {data: session} = useSession();
-    const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
+    const router = useRouter();
+    const [collapsed, setCollapsed] = useState(true);
+    const pathname = usePathname()
 
-    const authenticatedNavItems = [
-        {key: "home", label: "Home", icon: <HomeIcon/>, href: "/dashboard"},
-        {key: "entries", label: "Entries", icon: <BookIcon/>, href: "/entries"},
-        {key: "moods", label: "Moods", icon: <MoodIcon/>, href: "/moods"},
-        {key: "search", label: "Search", icon: <SearchIcon/>, href: "/search"},
-        {key: "settings", label: "Settings", icon: <SettingsIcon/>, href: "/settings"},
-        {key: "logout", label: "Logout", icon: <LogoutIcon/>, href: "/logout"},
+    const toggleSidebar = () => setCollapsed(!collapsed);
+
+    const menuItems = [
+        {label: "Dashboard", icon: <FiHome/>, path: "/dashboard"},
+        {label: "Entries", icon: <FiBook/>, path: "/entries"},
+        {label: "Moods", icon: <FiSmile/>, path: "/moods"},
+        {label: "Search", icon: <FiSearch/>, path: "/search"},
+        {label: "Settings", icon: <FiSettings/>, path: "/settings"},
+        {label: "Logout", icon: <FiLogOut/>, path: "/", action: () => signOut()},
     ];
 
-    const guestNavItems = [
-        {key: "login", label: "Login", href: "/login"},
-        {key: "signup", label: "Sign Up", href: "/register"},
-    ];
+    return (
+        <>
+            {/* Top Navbar */}
+            <nav className="navbar">
+                {!session && (
+                    <img src="/images/emberlog.png" alt="Emberlog Logo" className="logo"/>
+                )}
 
-    return isMobile ? (
-        <BottomNavigation showLabels>
-            <>
-                {(session ? authenticatedNavItems : guestNavItems).map(({key, label, icon, href}) => (
-                    <BottomNavigationAction
-                        key={key}
-                        label={label}
-                        icon={icon}
-                        component={Link}
-                        href={href}
-                    />
-                ))}
-            </>
-        </BottomNavigation>
-    ) : (
-        <AppBar position="static">
-            <Toolbar>
-                <Typography variant="h6" sx={{flexGrow: 1}}>
-                    Emberlog
-                </Typography>
-                <>
-                    {(session ? authenticatedNavItems : guestNavItems).map(({key, label, href}) => (
-                        <Button key={key} color="inherit" component={Link} href={href}>
-                            {label}
-                        </Button>
-                    ))}
-                </>
-            </Toolbar>
-        </AppBar>
+                <div className="navActions">
+                    {session && (
+                        <button className="menuButton" onClick={toggleSidebar}>
+                            {collapsed ? <FiMenu/> : <FiX/>}
+                        </button>
+                    )}
+                </div>
+            </nav>
+
+            {/* Sidebar (only when authenticated) */}
+            {session && (
+                <aside className={`sidebar ${collapsed ? "collapsed" : ""}`}>
+                    <ul>
+                        {menuItems.map(({label, icon, path, action}) => (
+                            <li key={label} onClick={action ? action : () => router.push(path)}
+                                className={pathname === path ? "active" : ""}>
+                                {icon} {!collapsed && <span>{label}</span>}
+                            </li>
+                        ))}
+                    </ul>
+                </aside>
+            )}
+        </>
     );
 };
 
