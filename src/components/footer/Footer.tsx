@@ -1,7 +1,9 @@
-import {Typography} from "@mui/material";
+import './style.css';
 
 export const Footer = () => (
-  <footer style={{ textAlign: 'center', padding: '10px', backgroundColor: '#eee', marginTop: '20px' }}>
-    <Typography variant="body2">&copy; {new Date().getFullYear()} Emberlog. All Rights Reserved. Built with &heartsuit;</Typography>
-  </footer>
+    <footer className="footer">
+        <p>
+            &copy; {new Date().getFullYear()} Emberlog. All Rights Reserved. Built with ❤️!
+        </p>
+    </footer>
 );
