@@ -1,0 +1,53 @@
+.entry-container {
+    max-width: 80%;
+    max-height: 80%;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: var(--background-color);
+    box-shadow: var(--shadow-medium);
+    border-radius: var(--border-radius-medium);
+}
+
+h2 {
+    text-align: center;
+    color: var(--primary-text-color);
+}
+
+.error {
+    color: var(--error-color);
+    text-align: center;
+}
+
+.entry-input, .entry-textarea {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1rem;
+    border: 1px solid var(--secondary-text-color);
+    border-radius: var(--border-radius-medium);
+    background: var(--card-background);
+    color: var(--text-color);
+}
+
+ .entry-textarea {
+     height: 60vh;
+ }
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--spacing-medium);
+}
+
+button {
+    padding: var(--spacing-small);
+    border-radius: var(--border-radius-medium);
+    cursor: pointer;
+    background: var(--primary-color);
+    color: white;
+    transition: background var(--transition-fast);
+
+}
+
+button:hover {
+    background: var(--primary-hover);
+}

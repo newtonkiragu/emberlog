@@ -2,7 +2,7 @@
 
 import {useState} from "react";
 import {useRouter} from "next/navigation";
-import {TextField, Button, Container, Typography, Box} from "@mui/material";
+import './styles.css';
 
 const Entry = () => {
     const [title, setTitle] = useState("");
@@ -13,6 +13,11 @@ const Entry = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (!title.trim() || !content.trim()) {
+            setError("Both title and content are required.");
+            return;
+        }
+
         setLoading(true);
         setError(null);
 
@@ -22,38 +27,53 @@ const Entry = () => {
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({title, content}),
             });
-            console.log(res)
 
             if (!res.ok) {
                 const data = await res.json();
-                setError(data.error || "Failed to save entry.");
-                setLoading(false);
-                return;
+                throw new Error(data.error || "Failed to save entry.");
             }
 
-            router.push("/dashboard"); // Redirect back to dashboard
-        } catch (error) {
-            setError("Something went wrong.");
+            router.push("/dashboard");
+        } catch (err) {
+            setError(err.message);
+        } finally {
             setLoading(false);
         }
     };
 
     return (
-        <Container maxWidth="sm">
-            <Typography variant="h4" textAlign="center" my={3}>Write New Entry</Typography>
+        <div className="entry-container">
+            <h2>Write New Entry</h2>
+            {error && <p className="error" aria-live="polite">{error}</p>}
+            <form onSubmit={handleSubmit}>
+                <label>Title</label>
+                <input
+                    type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    required
+                    className="entry-input"
+                />
 
-            {error && <Typography color="error">{error}</Typography>}
+                <label>Content</label>
+                <textarea
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                    required
+                    rows={6}
+                    className="entry-textarea"
+                ></textarea>
 
-            <Box component="form" onSubmit={handleSubmit} display="flex" flexDirection="column" gap={2}>
-                <TextField label="Title" variant="outlined" value={title} onChange={(e) => setTitle(e.target.value)}
-                           fullWidth required/>
-                <TextField label="Content" variant="outlined" value={content}
-                           onChange={(e) => setContent(e.target.value)} fullWidth required multiline rows={4}/>
-                <Button type="submit" variant="contained" color="primary" disabled={loading}>
-                    {loading ? "Saving..." : "Save Entry"}
-                </Button>
-            </Box>
-        </Container>
+                <div className="button-group">
+                    <button type="button" className="cancel button-warning" onClick={() => router.push("/dashboard")}>
+                        Cancel
+                    </button>
+                    <button type="submit" disabled={loading} className="submit">
+                        {loading ? "Saving..." : "Save Entry"}
+                    </button>
+                </div>
+            </form>
+        </div>
     );
 };
 
