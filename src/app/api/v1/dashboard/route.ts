@@ -37,10 +37,11 @@ export async function GET(req: NextRequest) {
         // Fetch mood summary
         const moodSummary = await prisma.dailyMoodSummary.findUnique({
             where: {
-                date: new Date(format(selectedDate, "yyyy-MM-dd")),
-                userId,
+                date: new Date(selectedDate.setHours(0, 0, 0, 0)),
+                userId: userId,
             },
         });
+        console.log("found mood summary", moodSummary);
 
         // Fetch most used tags
         const tags = await prisma.tag.findMany({

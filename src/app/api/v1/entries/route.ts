@@ -3,6 +3,7 @@ import prisma from "@/util/prisma/prisma";
 import {autoTagEntry} from "@/util/huggingface/autoTagEntry";
 import {analyzeSentiment} from "@/util/huggingface/analyzeSentiment";
 import {getServerSession} from "@/util/auth/auth";
+import {Mood} from "@prisma/client";
 
 export async function POST(req: Request) {
     try {
@@ -29,7 +30,7 @@ export async function POST(req: Request) {
         // Perform AI analysis (Sentiment & Tagging)
         console.log("analyzing mood");
         const {mood, score} = await analyzeSentiment({title, content});
-
+        console.log("found mood", mood, score);
         console.log("analyzing tags");
         const savedTags = await autoTagEntry({id: entry.id, title, content, tags: []});
 
@@ -43,14 +44,47 @@ export async function POST(req: Request) {
             },
         });
 
-        // Update or create daily mood summary
+        // Ensure date is always stored at midnight
         const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        await prisma.dailyMoodSummary.upsert({
-            where: {userId: userId, date: today},
-            update: {mood},
-            create: {date: new Date(), mood, userId},
+        today.setHours(0, 0, 0, 0); // Normalize the date to midnight
+
+// Fetch all moods for the day and compute the most common mood
+        const entriesForToday = await prisma.entry.findMany({
+            where: {
+                authorId: userId,
+                createdAt: {
+                    gte: today, // Entries from today at midnight
+                    lt: new Date(today.getTime() + 24 * 60 * 60 * 1000) // Before midnight tomorrow
+                }
+            },
+            select: {mood: true}
         });
+
+// If no entries exist, default to NEUTRAL
+        let computedMood: Mood = Mood.NEUTRAL;
+
+        if (entriesForToday.length > 0) {
+            const moodCounts = entriesForToday.reduce((acc, {mood}) => {
+                acc[mood] = (acc[mood] || 0) + 1;
+                return acc;
+            }, {} as Record<Mood, number>);
+
+            // Determine the most frequent mood of the day
+            computedMood = Object.keys(moodCounts).reduce((a, b) =>
+                moodCounts[a as Mood] > moodCounts[b as Mood] ? (a as Mood) : (b as Mood)
+            ) as Mood;
+        }
+
+// Update or create daily mood summary
+        await prisma.dailyMoodSummary.upsert({
+            where: {
+                userId,
+                date: today
+            },
+            update: {mood: computedMood},
+            create: {userId, date: today, mood: computedMood}
+        });
+
 
         return NextResponse.json({entry, status: 201});
 
