@@ -1,26 +1,48 @@
 import {InferenceClient} from "@huggingface/inference";
 import {Mood} from "@prisma/client";
 
-const hfClient = new InferenceClient(process.env.HUGGINGFACE_API_TOKEN as string); // Store API key in .env
+const hfClient = new InferenceClient(process.env.HUGGINGFACE_API_TOKEN as string);
+
+// Helper function to split text into chunks of maxLength tokens
+function splitTextIntoChunks(text: string, maxLength: number): string[] {
+    const chunks: string[] = [];
+    for (let i = 0; i < text.length; i += maxLength) {
+        chunks.push(text.slice(i, i + maxLength));
+    }
+    return chunks;
+}
 
 export async function analyzeSentiment(entry: { title: string; content: string }) {
     const text = `${entry.title} ${entry.content}`;
 
-    try {
-        const response = await hfClient.textClassification({
-            model: "nlptown/bert-base-multilingual-uncased-sentiment",
-            inputs: text,
-            provider: "hf-inference",
-        });
+    // Split the text into chunks of 512 tokens
+    const chunks = splitTextIntoChunks(text, 512);
 
-        if (!response || response.length === 0) {
+    try {
+        const responses = await Promise.all(
+            chunks.map(chunk =>
+                hfClient.textClassification({
+                    model: "cardiffnlp/twitter-roberta-base-sentiment-latest",
+                    inputs: chunk,
+                    provider: "hf-inference",
+                })
+            )
+        );
+
+        if (!responses || responses.length === 0) {
             throw new Error("Empty response from sentiment analysis");
         }
 
-        // Extract score (normalize 1-5 rating to a -1 to 1 scale)
-        const label = response[0].label;
-        const rating = parseInt(label.split(" ")[0], 10); // Extracts the number from "5 stars", "4 stars", etc.
-        const score = (rating - 3) / 2; // Maps 1-5 to -1 to 1 scale
+        // Aggregate scores from all chunks
+        let totalScore = 0;
+        for (const response of responses) {
+            const label = response[0].label;
+            const rating = parseInt(label.split(" ")[0], 10); // Extracts the number from "5 stars", "4 stars", etc.
+            const score = (rating - 3) / 2; // Maps 1-5 to -1 to 1 scale
+            totalScore += score;
+        }
+
+        const averageScore = totalScore / responses.length;
 
         const moods = [
             {name: Mood.TERRIBLE, min: -1, max: -0.8},
@@ -34,9 +56,9 @@ export async function analyzeSentiment(entry: { title: string; content: string }
             {name: Mood.HAPPY, min: 0.81, max: 1}
         ];
 
-        const assignedMood = moods.find(m => score >= m.min && score <= m.max)?.name || Mood.NEUTRAL;
+        const assignedMood = moods.find(m => averageScore >= m.min && averageScore <= m.max)?.name || Mood.NEUTRAL;
 
-        return {mood: assignedMood, score};
+        return {mood: assignedMood, score: averageScore};
     } catch (error) {
         console.error("Sentiment analysis error:", error);
         throw new Error("Sentiment analysis failed");
