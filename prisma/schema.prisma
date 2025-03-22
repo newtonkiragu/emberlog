@@ -33,6 +33,7 @@ model User {
   Entry            Entry[]
   sessions         Session[]
   DailyMoodSummary DailyMoodSummary[]
+  EntrySummary     EntrySummary?
 }
 
 model Entry {
@@ -48,6 +49,7 @@ model Entry {
   tagIds     String[]
   mood       Mood     @default(NEUTRAL)
   moodScore  Float?   @default(0)
+  bookmarked Boolean  @default(false) // New field
 }
 
 model Tag {
@@ -81,4 +83,17 @@ model DailyMoodSummary {
   updatedAt DateTime @updatedAt
 
   @@unique([userId, date]) // Ensure only one summary per user per day
+}
+
+model EntrySummary {
+  id             String   @id @default(uuid())
+  userId         String   @unique
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  totalEntries   Int      @default(0)
+  avgWordCount   Float    @default(0)
+  mostUsedTags   Json
+  moodTrends     Json
+  entryFrequency Json
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
