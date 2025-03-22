@@ -1,14 +1,15 @@
 'use client';
 
-import {ClientSessionWrapper} from "@/components/CleintSessionWrapper";
 import Navbar from "@/components/navbar/Navbar";
 import {AuthForm} from "@/components/register/AuthForm";
+import Breadcrumb from "@/components/breadcrumb/Breadcrumb";
 
 export default function RegisterPage() {
     return (
-        <ClientSessionWrapper>
+        <>
             <Navbar/>
+            <Breadcrumb/>
             <AuthForm/>
-        </ClientSessionWrapper>
+        </>
     );
 }

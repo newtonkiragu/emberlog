@@ -1,14 +1,15 @@
 'use client';
 
-import {ClientSessionWrapper} from "@/components/CleintSessionWrapper";
 import Navbar from "@/components/navbar/Navbar";
 import EditDeleteEntry from "@/components/entry/EditDeleteEntry";
+import Breadcrumb from "@/components/breadcrumb/Breadcrumb";
 
 export default function ReadEntryPage() {
     return (
-        <ClientSessionWrapper>
+        <>
             <Navbar/>
+            <Breadcrumb/>
             <EditDeleteEntry/>
-        </ClientSessionWrapper>
+        </>
     );
 }
