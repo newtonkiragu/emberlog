@@ -1,6 +1,6 @@
 /* SETTINGS PAGE STYLES */
 .settings-container {
-    max-width: 600px;
+    width: 80%;
     margin: 40px auto;
     background: var(--card-background);
     box-shadow: var(--shadow-medium);

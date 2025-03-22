@@ -7,10 +7,9 @@ import {
     FiMenu,
     FiHome,
     FiBook,
-    FiSmile,
     FiSearch,
     FiSettings,
-    FiLogOut, FiX,
+    FiLogOut, FiX, FiBarChart2,
 } from "react-icons/fi";
 import "./style.css";
 
@@ -25,7 +24,7 @@ const Navbar = () => {
     const menuItems = [
         {label: "Dashboard", icon: <FiHome/>, path: "/dashboard"},
         {label: "Entries", icon: <FiBook/>, path: "/entries"},
-        {label: "Moods", icon: <FiSmile/>, path: "/moods"},
+        {label: "Summary", icon: <FiBarChart2/>, path: "/summary"},
         {label: "Search", icon: <FiSearch/>, path: "/search"},
         {label: "Settings", icon: <FiSettings/>, path: "/settings"},
         {label: "Logout", icon: <FiLogOut/>, path: "/", action: () => signOut()},
