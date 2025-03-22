@@ -28,9 +28,9 @@ h2 {
     color: var(--text-color);
 }
 
- .entry-textarea {
-     height: 60vh;
- }
+.entry-textarea {
+    height: 60vh;
+}
 
 .button-group {
     display: flex;
@@ -50,4 +50,27 @@ button {
 
 button:hover {
     background: var(--primary-hover);
+}
+
+.entries-container {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--spacing-large);
+    width: 80vw;
+    margin-left: 7em;
+    margin-top: var(--spacing-small);
+}
+
+.filters-sidebar {
+    flex: 1;
+    max-width: 250px;
+}
+
+.entries-content {
+    flex: 3;
+}
+
+.entry-content {
+    white-space: pre-wrap; /* Wraps the text */
+    word-wrap: break-word; /* Breaks long words */
 }
