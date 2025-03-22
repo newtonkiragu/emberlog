@@ -1,5 +1,5 @@
 Disclaimer: Emberlog is a [Next.js](https://nextjs.org) project bootstrapped with [
-`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app) using node version 22.14.
+`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Emberlog
 
@@ -33,6 +33,9 @@ AI-powered Insights**: Sentiment analysis and auto-tagging using Hugging Face mo
 Emberlog is built with scalability and usability in mind, making personal journaling more insightful and engaging. 🚀
 
 ## Getting Started
+### Documentation
+- [API Documentation](API_DOCUMENTATION.md)
+- 
 
 ### 📌 Prerequisites
 
