@@ -1,6 +1,7 @@
 import type {Metadata} from "next";
 import "./globals.css";
 import {ClientSessionWrapper} from "@/components/CleintSessionWrapper";
+import ThemeProvider from "@/components/themeProvider/ThemeProvider";
 
 
 export const metadata: Metadata = {
@@ -18,7 +19,9 @@ export default function RootLayout(
         <html lang="en">
         <body>
         <ClientSessionWrapper>
-            {children}
+            <ThemeProvider>
+                {children}
+            </ThemeProvider>
         </ClientSessionWrapper>
         </body>
         </html>
