@@ -78,8 +78,10 @@ export async function POST(req: Request) {
 // Update or create daily mood summary
         await prisma.dailyMoodSummary.upsert({
             where: {
-                userId,
-                date: today
+                userId_date: {
+                    userId: userId,
+                    date: today,
+                },
             },
             update: {mood: computedMood},
             create: {userId, date: today, mood: computedMood}
@@ -90,6 +92,85 @@ export async function POST(req: Request) {
 
     } catch (error) {
         console.error("Error saving entry:", error);
+        return NextResponse.json({error: "Internal Server Error", status: 500});
+    }
+}
+
+export async function GET(req: Request) {
+    try {
+        const session = await getServerSession();
+        if (!session) return NextResponse.json({error: "Unauthorized", status: 401});
+
+        const {searchParams} = new URL(req.url);
+        const timeframe = searchParams.get("timeframe");
+        const mood = searchParams.get("mood");
+        const tags = searchParams.get("tags");
+        const search = searchParams.get("search");
+        const date_range = searchParams.get("date_range");
+        const bookmarked = searchParams.get("bookmarked");
+        const cursor = searchParams.get("cursor");
+
+        const userId = session.user.id;
+        let filters: any = {authorId: userId};
+
+        // Timeframe filter
+        if (timeframe) {
+            const now = new Date();
+            const startDate = new Date();
+            switch (timeframe) {
+                case "today":
+                    startDate.setHours(0, 0, 0, 0);
+                    break;
+                case "this_week":
+                    startDate.setDate(now.getDate() - now.getDay());
+                    break;
+                case "this_month":
+                    startDate.setDate(1);
+                    break;
+                case "last_3_months":
+                    startDate.setMonth(now.getMonth() - 3);
+                    break;
+                case "this_year":
+                    startDate.setMonth(0, 1);
+                    break;
+            }
+            filters.createdAt = {gte: startDate};
+        }
+
+        // Mood filter
+        if (mood) filters.mood = mood;
+
+        // Tags filter
+        if (tags) filters.tags = {hasSome: tags.split(",")};
+
+        // Search filter
+        if (search) filters.content = {contains: search, mode: "insensitive"};
+
+        // Date range filter
+        if (date_range) {
+            const [start, end] = date_range.split(",");
+            filters.createdAt = {gte: new Date(start), lte: new Date(end)};
+        }
+
+        // Bookmarked filter
+        if (bookmarked === "true") filters.bookmarked = true;
+
+        // Fetch entries with pagination
+        const entries = await prisma.entry.findMany({
+            where: filters,
+            orderBy: {createdAt: "desc"},
+            take: 20,
+            skip: cursor ? 1 : 0,
+            cursor: cursor ? {id: cursor} : undefined,
+        });
+
+        return NextResponse.json({
+            entries,
+            nextCursor: entries.length ? entries[entries.length - 1].id : null,
+        });
+
+    } catch (error) {
+        console.error("Error fetching entries:", error);
         return NextResponse.json({error: "Internal Server Error", status: 500});
     }
 }
