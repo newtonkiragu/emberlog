@@ -35,7 +35,8 @@ Emberlog is built with scalability and usability in mind, making personal journa
 ## Getting Started
 ### Documentation
 - [API Documentation](API_DOCUMENTATION.md)
-- 
+- [System Design Document](SYSTEM_DESIGN_DOCUMENT.md)
+- [Technical Decision Log](TECHNICAL_DECISION_LOG.md)
 
 ### 📌 Prerequisites
 
