@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app) using node version 22.14.
+Disclaimer: Emberlog is a [Next.js](https://nextjs.org) project bootstrapped with [
+`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app) using node version 22.14.
+
+## Emberlog
+
+Emberlog is a Next.js-based personal journaling app designed for seamless journaling with AI-powered insights. It allows
+users to log their daily thoughts, track emotions, and analyze patterns over time.
+
+### Key Features:
+
+**Journaling Interface**: A clean and intuitive UI for writing and managing entries.
+
+AI-powered Insights**: Sentiment analysis and auto-tagging using Hugging Face models.
+
+**Data Visualization**: Heatmaps, word clouds, and charts for tracking mood trends.
+
+**Filtering & Search**: Find past journal entries based on timeframe, mood, and tags.
+
+**Theming & Customization**: Light/dark mode with customizable color themes.
+
+**Authentication & Security**: NextAuth.js integration with PostgreSQL for secure user login.
+
+### Tech Stack:
+
+*Frontend*: Next.js (App Router), React, TypeScript
+
+*Backend*: Prisma, PostgreSQL, NextAuth.js
+
+*AI Integration*: Hugging Face Inference API
+
+*State Management*: Context API (considering Redux Toolkit)
+
+Emberlog is built with scalability and usability in mind, making personal journaling more insightful and engaging. 🚀
 
 ## Getting Started
 
-First, run the development server:
+### 📌 Prerequisites
+
+Before running the application, ensure you have the following installed:
+
+- Node.js v22.14 (or later)
+- PostgreSQL (for database storage)
+- Yarn (preferred package manager, but npm works as well)
+- Prisma (ORM for database migrations and queries)
+
+### 🚀 Installation
+
+#### 📂 Clone the repository
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone git@github.com:newtonkiragu/emberlog.git
+cd emberlog
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+#### 📦 Install dependencies
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+yarn install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+#### 🛠️ Environment Setup
+```dotenv
+DATABASE_URL="postgresql://karanu:password@localhost:5432/emberlog?schema=public"
+HUGGINGFACE_API_TOKEN="hf_token"
+NEXTAUTH_SECRET="stI7n61Aoc8ZtMlpuubgvfQGUix1uQbNg9MPHiQaiO4="
+NEXTAUTH_URL="http://localhost:3000"
+```
+>Replace:
+    
+    - karanu:password with your actual PostgreSQL username and password.
+    - hf_token with a valid Hugging Face API Token.
+    - NEXTAUTH_SECRET should be a randomly generated secret for authentication security.
 
-## Learn More
+#### 🛢️ Database Setup
+Run the following Prisma commands to set up the database:
+```bash
+# Push the Prisma schema to your database
+yarn prisma db push
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Generate the Prisma client
+yarn prisma generate
+```
